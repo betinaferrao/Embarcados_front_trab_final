@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Keyboard, Platform, Pressable } from 'react-native';
-import { Button, Card } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Card } from 'react-native-paper';
+import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function TemperaturaScreen() {
@@ -16,10 +16,10 @@ export default function TemperaturaScreen() {
   useEffect(() => {
     const carregarConfiguracoes = async () => {
       try {
-        const max = await AsyncStorage.getItem('tempMax');
-        const min = await AsyncStorage.getItem('tempMin');
-        if (max !== null) setTempMax(max);
-        if (min !== null) setTempMin(min);
+        const response = await axios.get('http://192.168.178.143:8000/Controle/1');
+        const config = response.data;
+        setTempMax(config.alto.toString());
+        setTempMin(config.baixo.toString());
       } catch (error) {
         console.error('Falha ao carregar configurações:', error);
       }
@@ -29,33 +29,15 @@ export default function TemperaturaScreen() {
 
   const salvarConfiguracoesTemperatura = async () => {
     try {
-      await AsyncStorage.setItem('tempMax', tempMax);
-      await AsyncStorage.setItem('tempMin', tempMin);
-
-      // Salva a leitura atual no histórico
-      const novaLeitura = {
-        data: new Date().toISOString(),
-        tempMax,
-        tempMin,
-      };
-      await salvarLeitura(novaLeitura);
-
+      await axios.patch('http://192.168.178.143:8000/Controle/1', {
+        alto: parseInt(tempMax, 10),
+        baixo: parseInt(tempMin, 10)
+      });
       Alert.alert('Sucesso', 'Configurações de temperatura salvas com sucesso!');
       Keyboard.dismiss();
     } catch (error) {
       console.error('Falha ao salvar configurações de temperatura:', error);
       Alert.alert('Erro', 'Falha ao salvar configurações de temperatura.');
-    }
-  };
-
-  const salvarLeitura = async (leitura) => {
-    try {
-      const historico = await AsyncStorage.getItem('historico');
-      const historicoArray = historico ? JSON.parse(historico) : [];
-      historicoArray.push(leitura);
-      await AsyncStorage.setItem('historico', JSON.stringify(historicoArray));
-    } catch (error) {
-      console.error('Erro ao salvar leitura:', error);
     }
   };
 
@@ -95,9 +77,9 @@ export default function TemperaturaScreen() {
             />
           </View>
           <View style={styles.botao}>
-            <Pressable style={styles.textoBotao} onPress={salvarConfiguracoesTemperatura}> 
+            <Pressable style={styles.textoBotao} onPress={salvarConfiguracoesTemperatura}>
               <Text style={styles.texto}>Salvar Configurações</Text>
-            </Pressable>      
+            </Pressable>
           </View>
         </Card.Content>
       </Card>

@@ -1,61 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { Card } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Card, Title, Paragraph } from 'react-native-paper';
+import axios from 'axios';
 
 export default function HistoricoScreen() {
-  const [historico, setHistorico] = useState([]);
+    const [registros, setRegistros] = useState([]);
 
-  useEffect(() => {
-    const carregarHistorico = async () => {
-      const historico = await AsyncStorage.getItem('historico');
-      setHistorico(historico ? JSON.parse(historico) : []);
+    useEffect(() => {
+        carregarRegistros();
+    }, []);
+
+    const carregarRegistros = async () => {
+        try {
+            const response = await axios.get('http://192.168.178.143:8000/Registro');
+            setRegistros(response.data);
+        } catch (error) {
+            console.error('Erro ao carregar histórico:', error);
+        }
     };
-    carregarHistorico();
-  }, []);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text>Data: {item.data}</Text>
-      <Text>Temperatura Máxima: {item.tempMax} °C</Text>
-      <Text>Temperatura Mínima: {item.tempMin} °C</Text>
-    </View>
-  );
-
-  return (
-    <View style={styles.fundo}>
-      <Card style={styles.container}>
-        <Card.Title title="Histórico" />
-        <Card.Content>
-          <FlatList
-            data={historico}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        </Card.Content>
-      </Card>
-    </View>
-  );
-}
+    return (
+        <ScrollView style={styles.container}>
+            <Title style={styles.title}>Histórico de Registros</Title>
+            {registros.map((registro, index) => (
+                <Card key={index} style={styles.card}>
+                    <Card.Content>
+                        <Paragraph><Text style={styles.title2}>Data/Hora:</Text> {registro.data_hora}</Paragraph>
+                        <Paragraph><Text style={styles.title2}>Temperatura:</Text> {registro.temperatura} °C</Paragraph>
+                        <Paragraph><Text style={styles.title2}>Umidade:</Text> {registro.umidade} %</Paragraph>
+                    </Card.Content>
+                </Card>
+            ))}
+        </ScrollView>
+    );
+};
 
 const styles = StyleSheet.create({
-  fundo: {
-    flex: 1,
-    backgroundColor: 'lightblue',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    padding: 15,
-    margin: 10,
-    width: '90%',
-    backgroundColor: '#f0f0f0',
-  },
-  item: {
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    backgroundColor: 'white',
-    borderRadius: 8,
-  },
+    container: {
+        flex: 1,
+        backgroundColor: 'lightblue',
+        padding: 10,
+    },
+    title: {
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 20,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    title2: {
+        fontWeight: 'bold', 
+    },
+    card: {
+        marginBottom: 10,
+    },
 });
+

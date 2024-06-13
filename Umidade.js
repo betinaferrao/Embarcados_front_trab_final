@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Keyboard, Platform, Pressable } from 'react-native';
 import { Button, Card } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function UmidadeScreen() {
@@ -16,46 +16,29 @@ export default function UmidadeScreen() {
   useEffect(() => {
     const carregarConfiguracoes = async () => {
       try {
-        const max = await AsyncStorage.getItem('umidadeMax');
-        const min = await AsyncStorage.getItem('umidadeMin');
-        if (max !== null) setUmidadeMax(max);
-        if (min !== null) setUmidadeMin(min);
+        const response = await axios.get('http://192.168.178.143:8000/Controle/0'); 
+        const config = response.data;
+        setUmidadeMax(config.alto.toString());
+        setUmidadeMin(config.baixo.toString());
       } catch (error) {
-        console.error('Falha ao carregar configurações:', error);
+        console.error('Falha ao carregar configurações de umidade:', error);
       }
     };
     carregarConfiguracoes();
   }, []);
 
+
   const salvarConfiguracoesUmidade = async () => {
     try {
-      await AsyncStorage.setItem('umidadeMax', umidadeMax);
-      await AsyncStorage.setItem('umidadeMin', umidadeMin);
-
-      // Salva a leitura atual no histórico
-      const novaLeitura = {
-        data: new Date().toISOString(),
-        umidadeMax,
-        umidadeMin,
-      };
-      await salvarLeitura(novaLeitura);
-
+      await axios.patch('http://192.168.178.143:8000/Controle/0', {
+        alto: parseInt(umidadeMax, 10),
+        baixo: parseInt(umidadeMin, 10)
+      });
       Alert.alert('Sucesso', 'Configurações de umidade salvas com sucesso!');
       Keyboard.dismiss();
     } catch (error) {
       console.error('Falha ao salvar configurações de umidade:', error);
       Alert.alert('Erro', 'Falha ao salvar configurações de umidade.');
-    }
-  };
-
-  const salvarLeitura = async (leitura) => {
-    try {
-      const historico = await AsyncStorage.getItem('historicoUmidade');
-      const historicoArray = historico ? JSON.parse(historico) : [];
-      historicoArray.push(leitura);
-      await AsyncStorage.setItem('historicoUmidade', JSON.stringify(historicoArray));
-    } catch (error) {
-      console.error('Erro ao salvar leitura:', error);
     }
   };
 
@@ -95,9 +78,9 @@ export default function UmidadeScreen() {
             />
           </View>
           <View style={styles.botao}>
-            <Pressable style={styles.textoBotao} onPress={salvarConfiguracoesUmidade}> 
+            <Pressable style={styles.textoBotao} onPress={salvarConfiguracoesUmidade}>
               <Text style={styles.texto}>Salvar Configurações</Text>
-            </Pressable>      
+            </Pressable>
           </View>
         </Card.Content>
       </Card>
