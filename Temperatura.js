@@ -43,7 +43,13 @@ export default function TemperaturaScreen() {
 
   return (
     <View style={styles.fundo}>
-      <Card style={styles.container}>
+      <Card style={styles.container2}>
+        <Text style={styles.subtitletitle}>Legenda do Led:</Text>
+        <Text><Text style={styles.text1}>Vermelho:</Text> Acima da temperatura máxima</Text>
+        <Text><Text style={styles.text2}>Verde:</Text> Entre temperatura máxima e miníma</Text>
+        <Text><Text style={styles.text3}>Azul:</Text> Abaixo da temperatura miníma</Text> 
+      </Card>
+      <Card style={styles.container} >
         <Card.Title title="Configuração de Temperatura" titleStyle={styles.title}/>
         <Card.Content>
           <Text>Temperatura Máxima</Text>
@@ -99,6 +105,12 @@ const styles = StyleSheet.create({
     margin: 10,
     width: '90%',
   },
+  container2: {
+    backgroundColor: '#f0f0f0',
+    padding: 15,
+    margin: 10,
+    width: '90%',
+  },
   dropdown: {
     marginVertical: 10,
     width: '100%',
@@ -128,5 +140,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold'
+  },
+  subtitletitle: {
+    fontWeight: 'bold'
+  },
+  text1: {
+    fontWeight: 'bold',
+    color: 'red'
+  },
+  text2: {
+    fontWeight: 'bold',
+    color: 'green'
+  },
+  text3: {
+    fontWeight: 'bold',
+    color: 'blue'
   }
 });
