@@ -56,7 +56,6 @@ export default function UmidadeScreen() {
               items={itens}
               setOpen={setAbrirMax}
               setValue={setUmidadeMax}
-              setItems={setItens}
               containerStyle={styles.dropdown}
               zIndex={5000}
               zIndexInverse={1000}

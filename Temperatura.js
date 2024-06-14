@@ -70,7 +70,6 @@ export default function TemperaturaScreen() {
               items={itens}
               setOpen={setAbrirMin}
               setValue={setTempMin}
-              setItems={setItens}
               containerStyle={styles.dropdown}
               zIndex={4000}
               zIndexInverse={900}
