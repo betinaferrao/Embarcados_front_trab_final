@@ -5,6 +5,7 @@ import UmidadeScreen from './Umidade';
 import HistoricoScreen from './Historico';
 import HomeScreen from './Home';
 import TemperaturaScreen from './Temperatura';
+import ModoScreen from './Modo';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
             <Stack.Screen name="Temperatura" component={TemperaturaScreen} />
             <Stack.Screen name="Umidade" component={UmidadeScreen} />
             <Stack.Screen name="Historico" component={HistoricoScreen} />
+            <Stack.Screen name="Modo" component={ModoScreen} />
         </Stack.Navigator>
     </NavigationContainer>
   );

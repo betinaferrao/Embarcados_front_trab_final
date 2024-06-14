@@ -22,6 +22,11 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.texto}>Histórico</Text>
         </Pressable>      
       </View>
+      <View style={styles.button}>
+        <Pressable style={styles.textoBotao} onPress={() => navigation.navigate('Modo')}> 
+          <Text style={styles.texto}>Alterar modo</Text>
+        </Pressable>      
+      </View>
     </View>
   );
 }
