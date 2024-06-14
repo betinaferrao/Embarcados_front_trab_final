@@ -22,7 +22,6 @@ export default function ModoScreen() {
   const alterarModo = async (novoModo) => {
     try {
       await axios.patch(`http://192.168.178.143:8000/Controle/Modo/${novoModo}`);
-    //   Alert.alert('Sucesso', 'Modo atualizado com sucesso!');
       setModoAtual(novoModo);
     } catch (error) {
       console.error('Falha ao alterar modo:', error);
