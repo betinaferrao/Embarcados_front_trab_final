@@ -4,6 +4,8 @@ import { Button, Card } from 'react-native-paper';
 import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 
+const ip = '192.168.178.143';
+
 export default function UmidadeScreen() {
   const [abrirMax, setAbrirMax] = useState(false);
   const [abrirMin, setAbrirMin] = useState(false);
@@ -16,7 +18,7 @@ export default function UmidadeScreen() {
   useEffect(() => {
     const carregarConfiguracoes = async () => {
       try {
-        const response = await axios.get('http://192.168.178.143:8000/Controle/0'); 
+        const response = await axios.get(`http://${ip}:8000/Controle/0`); 
         const config = response.data;
         setUmidadeMax(config.alto.toString());
         setUmidadeMin(config.baixo.toString());
@@ -30,7 +32,7 @@ export default function UmidadeScreen() {
 
   const salvarConfiguracoesUmidade = async () => {
     try {
-      await axios.patch('http://192.168.178.143:8000/Controle/0', {
+      await axios.patch(`http://${ip}:8000/Controle/0`, {
         alto: parseInt(umidadeMax, 10),
         baixo: parseInt(umidadeMin, 10)
       });

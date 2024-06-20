@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import axios from 'axios';
 
+const ip = '192.168.178.143';
+
 export default function HistoricoScreen() {
     const [registros, setRegistros] = useState([]);
 
@@ -12,7 +14,7 @@ export default function HistoricoScreen() {
 
     const carregarRegistros = async () => {
         try {
-            const response = await axios.get('http://192.168.178.143:8000/Registro');
+            const response = await axios.get(`http://${ip}:8000/Registro`);
             setRegistros(response.data);
         } catch (error) {
             console.error('Erro ao carregar histórico:', error);
