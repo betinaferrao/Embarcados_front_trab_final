@@ -5,6 +5,8 @@ import axios from 'axios';
 const { IP_ADDRESS } = require('./config');
 
 
+const ip = '192.168.178.143';
+
 export default function ModoScreen() {
   const [modoAtual, setModoAtual] = useState(null);
 
