@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert, Keyboard, Platform, Pressable } from 're
 import { Button, Card } from 'react-native-paper';
 import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
+const { IP_ADDRESS } = require('./config');
 
 export default function UmidadeScreen() {
   const [abrirMax, setAbrirMax] = useState(false);
@@ -16,7 +17,7 @@ export default function UmidadeScreen() {
   useEffect(() => {
     const carregarConfiguracoes = async () => {
       try {
-        const response = await axios.get('http://192.168.178.143:8000/Controle/0'); 
+        const response = await axios.get(`http://${IP_ADDRESS}:8000/Controle/0`); 
         const config = response.data;
         setUmidadeMax(config.alto.toString());
         setUmidadeMin(config.baixo.toString());
@@ -30,7 +31,7 @@ export default function UmidadeScreen() {
 
   const salvarConfiguracoesUmidade = async () => {
     try {
-      await axios.patch('http://192.168.178.143:8000/Controle/0', {
+      await axios.patch(`http://${IP_ADDRESS}:8000/Controle/0`, {
         alto: parseInt(umidadeMax, 10),
         baixo: parseInt(umidadeMin, 10)
       });
@@ -46,9 +47,9 @@ export default function UmidadeScreen() {
     <View style={styles.fundo}>
       <Card style={styles.container2}>
         <Text style={styles.subtitletitle}>Legenda do Led:</Text>
-        <Text><Text style={styles.text2}>Verde:</Text> Acima da umidade máxima</Text>
-        <Text><Text style={styles.text3}>Azul:</Text> Entre umidade máxima e miníma</Text> 
-        <Text><Text style={styles.text1}>Vermelho:</Text> Abaixo da umidade miníma</Text>
+        <Text><Text style={styles.text1}>Vermelho:</Text> Acima da umidade máxima</Text>
+        <Text><Text style={styles.text2}>Verde:</Text> Entre umidade máxima e miníma</Text> 
+        <Text><Text style={styles.text3}>Azul:</Text> Abaixo da umidade miníma</Text>
       </Card>
       <Card style={styles.container}>
         <Card.Title title="Configuração de Umidade" titleStyle={styles.title}/>

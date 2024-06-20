@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
 import { Card } from 'react-native-paper';
 import axios from 'axios';
+const { IP_ADDRESS } = require('./config');
+
 
 export default function ModoScreen() {
   const [modoAtual, setModoAtual] = useState(null);
@@ -9,7 +11,7 @@ export default function ModoScreen() {
   useEffect(() => {
     const carregarModoAtual = async () => {
       try {
-        const response = await axios.get('http://192.168.178.143:8000/Controle/Modo');
+        const response = await axios.get(`http://${IP_ADDRESS}:8000/Controle/Modo`);
         const modo = response.data.modo;
         setModoAtual(modo);
       } catch (error) {
@@ -21,7 +23,7 @@ export default function ModoScreen() {
 
   const alterarModo = async (novoModo) => {
     try {
-      await axios.patch(`http://192.168.178.143:8000/Controle/Modo/${novoModo}`);
+      await axios.patch(`http://${IP_ADDRESS}:8000/Controle/Modo/${novoModo}`);
       setModoAtual(novoModo);
     } catch (error) {
       console.error('Falha ao alterar modo:', error);

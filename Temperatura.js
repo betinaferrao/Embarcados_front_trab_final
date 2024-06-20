@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert, Keyboard, Platform, Pressable } from 're
 import { Card } from 'react-native-paper';
 import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
+const { IP_ADDRESS } = require('./config');
 
 export default function TemperaturaScreen() {
   const [abrirMax, setAbrirMax] = useState(false);
@@ -16,7 +17,7 @@ export default function TemperaturaScreen() {
   useEffect(() => {
     const carregarConfiguracoes = async () => {
       try {
-        const response = await axios.get('http://192.168.178.143:8000/Controle/1');
+      const response = await axios.get(`http://${IP_ADDRESS}:8000/Controle/1`);
         const config = response.data;
         setTempMax(config.alto.toString());
         setTempMin(config.baixo.toString());
@@ -29,7 +30,7 @@ export default function TemperaturaScreen() {
 
   const salvarConfiguracoesTemperatura = async () => {
     try {
-      await axios.patch('http://192.168.178.143:8000/Controle/1', {
+      await axios.patch(`http://${IP_ADDRESS}:8000/Controle/1`, {
         alto: parseInt(tempMax, 10),
         baixo: parseInt(tempMin, 10)
       });
