@@ -5,7 +5,6 @@ import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 const { IP_ADDRESS } = require('./config');
 
-const ip = '192.168.178.143';
 
 export default function TemperaturaScreen() {
   const [abrirMax, setAbrirMax] = useState(false);

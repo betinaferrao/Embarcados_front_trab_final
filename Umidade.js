@@ -5,7 +5,6 @@ import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
 const { IP_ADDRESS } = require('./config');
 
-const ip = '192.168.178.143';
 
 export default function UmidadeScreen() {
   const [abrirMax, setAbrirMax] = useState(false);
@@ -49,9 +48,9 @@ export default function UmidadeScreen() {
     <View style={styles.fundo}>
       <Card style={styles.container2}>
         <Text style={styles.subtitletitle}>Legenda do Led:</Text>
-        <Text><Text style={styles.text1}>Vermelho:</Text> Acima da umidade máxima</Text>
-        <Text><Text style={styles.text2}>Verde:</Text> Entre umidade máxima e miníma</Text> 
-        <Text><Text style={styles.text3}>Azul:</Text> Abaixo da umidade miníma</Text>
+        <Text><Text style={styles.text2}>Verde:</Text> Acima da umidade máxima</Text> 
+        <Text><Text style={styles.text3}>Azul:</Text> Entre umidade máxima e miníma</Text>
+        <Text><Text style={styles.text1}>Vermelho:</Text> Abaixo da umidade miníma</Text>
       </Card>
       <Card style={styles.container}>
         <Card.Title title="Configuração de Umidade" titleStyle={styles.title}/>
